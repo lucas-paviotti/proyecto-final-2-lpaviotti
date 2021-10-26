@@ -1,0 +1,26 @@
+{
+    "id": "",
+    "timestamp": 1633400601387,
+    "productos": [
+        {
+            "id": "d69083de-1bcd-4133-920c-6f9bace21d23",
+            "timestamp": 1633399731538,
+            "nombre": "Dungeon And Dragons 5e Monster Manual D&d Dnd 5ta Edición",
+            "descripcion": "Producto 2",
+            "codigo": "JUE-02",
+            "foto": "https://http2.mlstatic.com/D_NQ_NP_726931-MLA45539678600_042021-O.webp",
+            "precio": 11275,
+            "stock": 2
+        },
+        {
+            "id": "0334b422-9b72-43f7-9f95-bdb93f46d14b",
+            "timestamp": 1633399733034,
+            "nombre": "Dados Dungeon & Dragons Rol Negro Pearl + Bolsa",
+            "descripcion": "Producto 3",
+            "codigo": "JUE-03",
+            "foto": "https://http2.mlstatic.com/D_NQ_NP_632645-MLA40799082681_022020-O.webp",
+            "precio": 1297.97,
+            "stock": 4
+        }
+    ]
+}

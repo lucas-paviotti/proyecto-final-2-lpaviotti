@@ -1,0 +1,36 @@
+{
+    "id": "fc23c8d7-fd9d-43fc-b121-88f5e0a29082",
+    "timestamp": 1633481677849,
+    "productos": [
+        {
+            "id": "5b96d092-3eb7-4a3e-a8a5-eb9d1b4ffff0",
+            "timestamp": 1633399619913,
+            "nombre": "Juego de mesa T.E.G. Tradicional",
+            "descripcion": "Producto 1",
+            "codigo": "JUE-01",
+            "foto": "https://http2.mlstatic.com/D_NQ_NP_659090-MLA44676313817_012021-O.webp",
+            "precio": 3850.5,
+            "stock": 6
+        },
+        {
+            "id": "fb7875df-1bee-487e-8a93-a180dab1f8ce",
+            "timestamp": 1635126740342,
+            "nombre": "Juego de mesa T.E.G. Tradicional",
+            "descripcion": "Producto 1",
+            "codigo": "JUE-01",
+            "foto": "https://http2.mlstatic.com/D_NQ_NP_659090-MLA44676313817_012021-O.webp",
+            "precio": 3850.5,
+            "stock": 6
+        },
+        {
+            "id": "0334b422-9b72-43f7-9f95-bdb93f46d14b",
+            "timestamp": 1633399733034,
+            "nombre": "Dados Dungeon & Dragons Rol Negro Pearl + Bolsa",
+            "descripcion": "Producto 3",
+            "codigo": "JUE-03",
+            "foto": "https://http2.mlstatic.com/D_NQ_NP_632645-MLA40799082681_022020-O.webp",
+            "precio": 1297.97,
+            "stock": 4
+        }
+    ]
+}
