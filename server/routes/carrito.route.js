@@ -3,7 +3,7 @@ import { getCarrito, addCarrito, deleteCarrito } from "../controllers/carrito.co
 
 const carritoRouter = Router();
 
-carritoRouter.get('/listar/:id?', getCarrito);
+carritoRouter.get('/listar', getCarrito);
 carritoRouter.post('/agregar/:id_producto', addCarrito);
 carritoRouter.delete('/borrar/:id', deleteCarrito);
 

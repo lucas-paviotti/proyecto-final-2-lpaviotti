@@ -1,9 +1,10 @@
 import { v4 } from "uuid";
 
 export default class Carrito {
-    constructor(producto) {
+    constructor(usuario, producto) {
         this.id = v4();
         this.timestamp = Date.now();
+        this.usuario = usuario || v4();
         this.productos = [producto] || [];
     }
     getParsedObject() {

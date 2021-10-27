@@ -2,7 +2,7 @@ import * as path from 'path';
 const options = {
 	client: 'sqlite3',
 	connection: {
-		filename: path.resolve('src/db', 'ecommerce_coderhouse.sqlite'),
+		filename: path.resolve('db', 'ecommerce.sqlite'),
 	},
 	useNullAsDefault: true,
 };

@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 import findOrCreate from 'mongoose-findorcreate';
 
 const ProductosSchema = new Schema({
-	timestamp: Date,
 	nombre: {
 		type: String,
 		unique: true,
@@ -11,10 +10,10 @@ const ProductosSchema = new Schema({
 	descripcion: String,
 	codigo: String,
 	foto: String,
-	precio: String,
-	stock: String,
+	precio: Number,
+	stock: Number,
 });
 
 ProductosSchema.plugin(findOrCreate);
 
-export default mongoose.model('productos', ProductosSchema);
+export default mongoose.model('producto', ProductosSchema);

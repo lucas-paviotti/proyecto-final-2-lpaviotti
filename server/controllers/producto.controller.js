@@ -21,11 +21,13 @@ export const addProducto = async (req, res) => {
 export const getProductos = async (req, res) => {
     try {
         const { id } = req.params;
-        const producto = await persistencia.readProducto(id);
-        if (producto == 'not found') {
+        const productos = await persistencia.readProducto(id);
+        if (productos == 'empty') {
+            return res.status(200).json({error: 'No hay productos.'});
+        } else if (productos == 'not found') {
             return res.status(404).json({error: 'Producto no encontrado.'});
         } else {
-            return res.status(200).json(producto);
+            return res.status(200).json(productos);
         }
     } catch(e) {
         res.status(500).json({error: 'Error al buscar productos.'});

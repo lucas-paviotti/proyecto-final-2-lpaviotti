@@ -53,13 +53,13 @@ export default class fsDAO {
             return 'not found';
         }
     }
-    createCarrito(id) {
+    createCarrito(id, usuario) {
         const filteredArray = this.productos.find(obj => obj.id == id);
         const productosCarrito = this.carrito.productos;
 
         if (filteredArray) {
             if (!productosCarrito || productosCarrito.length == 0) {
-                const nuevoCarrito = new Carrito(filteredArray);
+                const nuevoCarrito = new Carrito(usuario, filteredArray);
                 fs.promises.writeFile(`./content/carrito.content.json`, JSON.stringify(nuevoCarrito, null, 4)).catch( error => { console.log(`Error al escribir archivo de productos: ${error}`) } );
                 return this.carrito.productos;
             }
@@ -70,22 +70,13 @@ export default class fsDAO {
             return 'not found';
         }
     }
-    readCarrito(id) {
-        const productosCarrito = this.carrito.productos;
-
-        if (!productosCarrito || productosCarrito.length == 0) {
-            return 'empty';
-        }
-
-        if (id) {
-            const filteredArray = productosCarrito.find(obj => obj.id == id);
-            if (filteredArray) {
-                return filteredArray;
-            } else {
-                return 'not found';
-            }
+    readCarrito(usuario) {
+        const filteredArray = this.carrito.find(obj => obj.usuario == usuario);
+        
+        if (filteredArray) {
+            return filteredArray;
         } else {
-            return this.carrito.productos;
+            return 'not found';
         }
     }
     deleteCarrito(id) {

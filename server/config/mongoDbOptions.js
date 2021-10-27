@@ -1,5 +1,5 @@
-const localUrl = process.env.MONGO_LOCAL_URL;
-const atlasUrl = process.env.MONGO_ATLAS_URL;
+import { MONGO_LOCAL_URL as localUrl, MONGO_ATLAS_URL as atlasUrl } from './config.js';
+
 const config = {
 	localUrl,
 	atlasUrl,
@@ -8,11 +8,5 @@ const config = {
 		useUnifiedTopology: true,
 	},
 };
-/* 
-options: {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-		useCreateIndex: true,
-		useFindAndModify: false,
-	}, */
+
 export default config;
