@@ -44,20 +44,30 @@ export default class mysqlDAO {
                 });
             }
         });
+        this.initCarritoItem = this.connection.schema.hasTable('carrito_item').then(exists => {
+            if (!exists) {
+                return this.connection.schema.createTable('carrito_item', table => {
+                    table.string('id').notNullable().primary(),
+                    table.string('id_carrito'),
+                    table.string('id_producto'),
+                    table.integer('cantidad');
+                })
+                .then(()=>{
+                    console.log('Tabla carrito_item creada!');
+                    this.connection.destroy();
+                })
+                .catch(e=>{
+                    console.log('Error en creación de tabla carrito_item:', e);
+                    this.connection.destroy();
+                });
+            }
+        });
     }
     createProducto(nombre, descripcion, codigo, foto, precio, stock) {
         const id = v4();
         return this.connection.insert({id: id, nombre: nombre, descripcion: descripcion, codigo: codigo, foto: foto, precio: precio, stock: stock}).into('productos')
         .then( () => {
-            return {
-                id: id, 
-                nombre: nombre, 
-                descripcion: descripcion, 
-                codigo: codigo, 
-                foto: foto,
-                precio: precio, 
-                stock: stock
-            };
+            return this.connection.from('productos').where('id', id);
         })
         .catch( (e) => {
             console.log(`Error al insertar en tabla: ${e}`);
@@ -80,19 +90,27 @@ export default class mysqlDAO {
             });
         } else {
             return this.connection.from('productos').select('*')
+            .then( (producto) => {
+                if (producto.length) {
+                    return producto;
+                } else {
+                    return 'empty';
+                }
+            })
+            .catch( (e) => {
+                console.log(`Error al leer tabla: ${e}`);
+                throw `Error al leer tabla: ${e}`;
+            });
         }
     }
     updateProducto(id, nombre, descripcion, codigo, foto, precio, stock) {
         return this.connection.from('productos').where('id', id).update({nombre: nombre, descripcion: descripcion, codigo: codigo, foto: foto, precio: precio, stock: stock})
-        .then( () => {
-            return {
-                nombre: nombre, 
-                descripcion: descripcion, 
-                codigo: codigo, 
-                foto: foto,
-                precio: precio, 
-                stock: stock
-            };
+        .then( (producto) => {
+            if (producto) {
+                return this.connection.from('productos').where('id', id);
+            } else {
+                return 'not found';
+            }
         })
         .catch( (e) => {
             console.log(`Error al editar tabla: ${e}`);
@@ -100,17 +118,94 @@ export default class mysqlDAO {
         });
     }
     deleteProducto(id) {
-        this.connection.from('productos').where('id', id).del()
+        return this.connection.from('productos').select('*').where('id', id)
         .then( (producto) => {
-            if (producto) {
-                return producto;
+            const productoBorrado = producto;
+            if (productoBorrado.length) {
+                return this.connection.from('productos').del().where('id', id)
+                .then( () => {
+                    return productoBorrado;
+                })
+                .catch( (e) => {
+                    console.log(`Error al eliminar de tabla: ${e}`);
+                    throw `Error al eliminar de tabla: ${e}`;
+                });
             } else {
                 return 'not found';
             }
         })
         .catch( (e) => {
-            console.log(`Error al eliminar de tabla: ${e}`);
-            throw `Error al eliminar de tabla: ${e}`;
+            console.log(`Error al leer tabla: ${e}`);
+            throw `Error al leer tabla: ${e}`;
         });
+    }
+    createCarrito(id, usuario) {
+        const idCarrito = v4();
+
+
+        return this.connection.from('productos').select('*').where('id', id)
+        .then( (producto) => {
+            const productoEncontrado = producto;
+            if (producto.length) {
+                // EXISTE PRODUCTO: BUSCAR CARRITO
+                return this.connection.from('carrito').select('*').where('usuario', usuario)
+                .then( (carrito) => {
+                    const carritoEncontrado = carrito;
+                    if (carrito.length) {
+                        // EXISTE CARRITO: BUSCAR CARRITO_ITEM
+                        return this.connection.from('carrito_item').select('*').where('usuario', usuario)
+                        .then( (carritoItem) => {
+                            if (carritoItem.length) {
+                                // EXISTE CARRITO_ITEM: AGREGAR +1 A CANTIDAD DE ITEM Y MOSTRAR INNER JOIN
+                                console.log(carritoItem);
+                            } else {
+                                // NO EXISTE CARRITO_ITEM: AGREGAR NUEVO CARRITO_ITEM
+                                const idCarritoItem = v4();
+                                return this.connection.insert({id: idCarritoItem, id_carrito: carritoEncontrado.id, id_producto: productoEncontrado.id, cantidad: 1}).into('carrito_item')
+                                .then( () => {
+                                    // RETORNAR INNER JOIN
+                                })
+                                .catch( (e) => {
+                                    console.log(`Error al insertar en tabla: ${e}`);
+                                    throw `Error al insertar en tabla: ${e}`;
+                                });
+                            }
+                        })
+                        .catch( (e) => {
+                            console.log(`Error al leer tabla: ${e}`);
+                            throw `Error al leer tabla: ${e}`;
+                        });
+                    } else {
+                        // NO EXISTE CARRITO: AGREGAR CARRITO
+                        const idCarrito = v4();
+                        return this.connection.insert({id: idCarrito, usuario: usuario, productos: productoEncontrado.id}).into('carrito')
+                        .then( () => {
+                            // RETORNAR INNER JOIN
+                        })
+                        .catch( (e) => {
+                            console.log(`Error al insertar en tabla: ${e}`);
+                            throw `Error al insertar en tabla: ${e}`;
+                        });
+                    }
+                })
+                .catch( (e) => {
+                    console.log(`Error al leer tabla: ${e}`);
+                    throw `Error al leer tabla: ${e}`;
+                });
+            } else {
+                // NO EXISTE PRODUCTO:
+                return 'not found';
+            }
+        })
+        .catch( (e) => {
+            console.log(`Error al leer tabla: ${e}`);
+            throw `Error al leer tabla: ${e}`;
+        });
+    }
+    readCarrito(usuario) {
+        
+    }
+    deleteCarrito(id, usuario) {
+        
     }
 }
