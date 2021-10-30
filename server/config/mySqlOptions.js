@@ -7,6 +7,7 @@ const options = {
 		password: '',
 		database: 'ecommerce',
 	},
+	useNullAsDefault: true
 };
 
 export default options;

@@ -91,8 +91,8 @@ export default class mongodbDAO {
     async readCarrito(usuario) {
         try {
             const carrito = await CarritoSchema.findOne({ usuario: usuario }).populate('productos');
-            if (carrito.productos.length) {
-                return carrito.productos;
+            if (carrito) {
+                return carrito;
             } else {
                 return 'empty';
             }
