@@ -8,7 +8,7 @@ export default class mysqlDAO {
             if (!exists) {
                 return this.connection.schema.createTable('productos', table => {
                     table.string('id').primary().notNullable(),
-                    table.timestamp('timestamp'),
+                    table.timestamp('timestamp').defaultTo(this.connection.fn.now()),
                     table.string('nombre'),
                     table.string('descripcion'),
                     table.string('codigo'),
@@ -30,7 +30,7 @@ export default class mysqlDAO {
             if (!exists) {
                 return this.connection.schema.createTable('carrito', table => {
                     table.string('id').notNullable().primary(),
-                    table.timestamp('timestamp'),
+                    table.timestamp('timestamp').defaultTo(this.connection.fn.now()),
                     table.integer('usuario');
                 })
                 .then(()=>{
